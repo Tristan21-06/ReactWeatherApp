@@ -1,5 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
+import Weather from "./views/Weather";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
   return (
@@ -18,6 +20,10 @@ function App() {
           Learn React
         </a>
       </header>
+
+      <main>
+        <Weather />
+      </main>
     </div>
   );
 }
