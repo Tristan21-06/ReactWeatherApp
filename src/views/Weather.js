@@ -1,13 +1,41 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import CurrentWeather from "./Weather/CurrentWeather";
 import FiveDaysWeather from "./Weather/FiveDaysWeather";
 import {Button, Dropdown, Form, InputGroup, Tab, Tabs} from "react-bootstrap";
 import {Search, StarFill, X} from "react-bootstrap-icons";
+import {buildGeoPosUrl} from "../utils/URL";
+import {fetchData} from "../utils/functions";
 
 function Weather() {
     const [city, setCity] = useState('');
     const [favorites, setFavorites] = useState([]);
     const [loading, setLoading] = useState(null);
+
+    useEffect(() => {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition((position) => {
+                    setLoading(true);
+
+                    const lat = position.coords.latitude;
+                    const lon = position.coords.longitude;
+
+                    let geoUrl = buildGeoPosUrl("https://api.openweathermap.org/geo/1.0/reverse", {lat,lon});
+
+                    fetchData(geoUrl)
+                        .then(data => {
+                            setCity(data[0].name);
+                        })
+                        .catch((error) => {
+                            console.error(error);
+                        })
+                },
+                () => {
+                    console.error("Unable to retrieve your location");
+                });
+        } else {
+            console.error("Geolocation not supported");
+        }
+    }, []);
 
     const switchCity = (event) => {
         event.preventDefault();
