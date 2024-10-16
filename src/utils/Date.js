@@ -24,9 +24,7 @@ export const months = [
 ];
 
 export const formatDate = (dateString) => {
-    console.log(dateString)
     let date = new Date(dateString);
-    console.log(date)
     return `${days[date.getDay()]} ${date.getDate()} ${months[date.getMonth() - 1]} ${date.getFullYear()}`
 };
 

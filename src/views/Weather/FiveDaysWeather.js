@@ -35,13 +35,6 @@ function FiveDaysWeather({city}) {
         }
     }, [city]);
 
-    useEffect(() => {
-        if (cityData) {
-            console.log(cityData);
-        }
-    }, [cityData]);
-
-
     return (
         <div className="p-4">
             {cityData?.list ? (
