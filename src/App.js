@@ -4,28 +4,20 @@ import Weather from "./views/Weather";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    return (
+        <div className="App">
 
-      <main>
-        <Weather />
-      </main>
-    </div>
-  );
+            <main className="p-4" id="main">
+                <img src={logo} className="App-logo" alt="logo"/>
+
+                <Weather/>
+            </main>
+
+            <footer className="p-4">
+                &copy; Tristan JACQUEMARD
+            </footer>
+        </div>
+    );
 }
 
 export default App;

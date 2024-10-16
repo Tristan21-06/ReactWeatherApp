@@ -8,11 +8,10 @@ import {
     Card,
     CardHeader,
     CardBody,
-    Tab,
-    Tabs,
+    Spinner,
 } from "react-bootstrap";
 
-function FiveDaysWeather({city}) {
+function FiveDaysWeather({city, loading, setLoading}) {
     const [cityData, setCityData] = useState(null);
 
     useEffect(() => {
@@ -21,12 +20,14 @@ function FiveDaysWeather({city}) {
 
             fetchData(weatherUrl)
                 .then(data => {
-                        data.list = groupByDate(data.list);
-                        setCityData({
-                            ...data
-                        })
-                    }
-                )
+                    data.list = groupByDate(data.list);
+
+                    setCityData({
+                        ...data
+                    });
+
+                    setLoading(false);
+                })
                 .catch(error => {
                     console.error(error)
                 })
@@ -37,7 +38,7 @@ function FiveDaysWeather({city}) {
 
     return (
         <div className="p-4">
-            {cityData?.list ? (
+            {!loading && cityData?.list ? (
                 <>
                     <Carousel
                         interval={null}
@@ -87,7 +88,11 @@ function FiveDaysWeather({city}) {
                         ))}
                     </Carousel>
                 </>
-            ) : 'Aucune ville sélectionnée'}
+            ) : (
+                <Spinner animation="border" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                </Spinner>
+            )}
         </div>
     );
 }

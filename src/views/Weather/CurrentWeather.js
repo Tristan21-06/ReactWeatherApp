@@ -1,10 +1,15 @@
 import {useEffect, useState} from "react";
 import {fetchData} from "../../utils/functions"
 import {buildWeatherUrl} from "../../utils/URL";
-import {Card, CardBody, CardHeader} from "react-bootstrap";
+import {
+    Card,
+    CardBody,
+    CardHeader,
+    Spinner
+} from "react-bootstrap";
 import {formatDate} from "../../utils/Date";
 
-function CurrentWeather({city}) {
+function CurrentWeather({city, loading, setLoading}) {
     const [cityData, setCityData] = useState(null);
 
     useEffect(() => {
@@ -17,7 +22,9 @@ function CurrentWeather({city}) {
 
                     setCityData({
                         ...data
-                    })
+                    });
+
+                    setLoading(false);
                 })
                 .catch(error => {
                     console.error(error)
@@ -28,7 +35,7 @@ function CurrentWeather({city}) {
 
     return (
         <div className="p-4">
-            {cityData ? (
+            {!loading && cityData ? (
                 <>
                     <div className="d-flex justify-content-center">
                         <Card className="w-50">
@@ -46,7 +53,11 @@ function CurrentWeather({city}) {
                         </Card>
                     </div>
                 </>
-            ) : 'Aucune ville sélectionnée'}
+            ) : (
+                <Spinner animation="border" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                </Spinner>
+            )}
         </div>
     );
 }

@@ -45,3 +45,13 @@
     filter: invert(1);
   }
 }
+
+.favorite-item.dropdown-item {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+
+  span {
+    height: 100%;
+  }
+}
