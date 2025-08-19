@@ -8,6 +8,7 @@ import {fetchData} from "../utils/functions";
 
 function Weather() {
     const [city, setCity] = useState('');
+    const [message, setMessage] = useState('Aucune ville sélectionnée');
     const [favorites, setFavorites] = useState([]);
     const [loading, setLoading] = useState(null);
 
@@ -27,6 +28,8 @@ function Weather() {
                         })
                         .catch((error) => {
                             console.error(error);
+                            setMessage("Cette ville n'a pas été trouvée");
+                            setLoading(null)
                         })
                 },
                 () => {
@@ -36,6 +39,10 @@ function Weather() {
             console.error("Geolocation not supported");
         }
     }, []);
+
+    useEffect(() => {
+
+    }, [loading, message]);
 
     const switchCity = (event) => {
         event.preventDefault();
@@ -80,12 +87,12 @@ function Weather() {
     };
 
     return (
-        <>
+        <section>
             <div className="d-flex justify-content-around">
                 <Form onSubmit={switchCity} className="w-50 d-flex justify-content-center" id="city-form">
                     <InputGroup>
                         <Form.Control type="text" name="city" id="city" />
-                        <Button className="btn btn-primary" type="submit">
+                        <Button variant="success" type="submit" aria-label={"search"}>
                             <Search />
                         </Button>
                     </InputGroup>
@@ -93,7 +100,7 @@ function Weather() {
                 {favorites.length ? (
                     <>
                         <Dropdown>
-                            <Dropdown.Toggle variant="success" id="dropdown-autoclose-false">
+                            <Dropdown.Toggle variant="primary" id="dropdown-autoclose-false">
                                 Favoris
                             </Dropdown.Toggle>
 
@@ -101,7 +108,7 @@ function Weather() {
                                 {favorites.map((favorite, index) => (
                                     <Dropdown.Item href="#main" key={index} className="favorite-item">
                                         <span onClick={(event) => displayFavorite(event, index)}>{favorite}</span>
-                                        <Button onClick={(event) => deleteFavorite(event, index)}>
+                                        <Button  aria-label={"removefav"+index} id={"remove-fav-" + index} variant={"danger"} onClick={(event) => deleteFavorite(event, index)}>
                                             <X></X>
                                         </Button>
                                     </Dropdown.Item>
@@ -116,22 +123,22 @@ function Weather() {
                     <>
                         <h2>
                             {city}
-                            <Button className="btn btn-dark ms-2" onClick={addToFavorites}>
+                            <Button className="btn btn-dark ms-2" onClick={addToFavorites} aria-label={"addfav"}>
                                 <StarFill />
                             </Button>
                         </h2>
                         <Tabs>
                             <Tab title="Météo actuelle" eventKey="current-day">
-                                <CurrentWeather city={city} loading={loading} setLoading={setLoading}/>
+                                <CurrentWeather city={city} loading={loading} setLoading={setLoading} setMessage={setMessage} />
                             </Tab>
                             <Tab title="Météo sur 5 jours" eventKey="five-days">
-                                <FiveDaysWeather city={city} loading={loading} setLoading={setLoading}/>
+                                <FiveDaysWeather city={city} loading={loading} setLoading={setLoading} setMessage={setMessage} />
                             </Tab>
                         </Tabs>
                     </>
-                ) : "Aucune ville précédemment sélectionnée"}
+                ) : message}
             </div>
-        </>
+        </section>
     );
 }
 

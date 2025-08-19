@@ -11,7 +11,7 @@ import {
     Spinner,
 } from "react-bootstrap";
 
-function FiveDaysWeather({city, loading, setLoading}) {
+function FiveDaysWeather({city, loading, setLoading, setMessage}) {
     const [cityData, setCityData] = useState(null);
 
     useEffect(() => {
@@ -29,6 +29,8 @@ function FiveDaysWeather({city, loading, setLoading}) {
                     setLoading(false);
                 })
                 .catch(error => {
+                    setMessage("Cette ville n'a pas été trouvée");
+                    setLoading(null)
                     console.error(error)
                 })
             ;
@@ -48,14 +50,14 @@ function FiveDaysWeather({city, loading, setLoading}) {
                             (
                                 <>
                                     <span aria-hidden="true" className="carousel-control-prev-icon"></span>
-                                    <span>Jour précédent</span>
+                                    <span className={"d-none d-sm-block"}>Jour précédent</span>
                                 </>
                             )
                         }
                         nextIcon={
                             (
                                 <>
-                                    <span>Jour suivant</span>
+                                    <span className={"d-none d-sm-block"}>Jour suivant</span>
                                     <span aria-hidden="true" className="carousel-control-next-icon"></span>
                                 </>
                             )
@@ -66,7 +68,8 @@ function FiveDaysWeather({city, loading, setLoading}) {
                                 <div className="d-flex justify-content-center">
                                     <Card className="w-50">
                                         <CardHeader>
-                                            <h4>{formatDate(date)}</h4>
+                                            <h4 className={"d-none d-sm-block"}>{formatDate(date)}</h4>
+                                            <span className={"d-sm-none"}>{formatDate(date)}</span>
                                         </CardHeader>
                                         <CardBody>
                                             <Carousel indicators={false} interval={null}>
